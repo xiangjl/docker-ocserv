@@ -109,7 +109,7 @@ All the users opertaions happened while the container is running. If you used a 
 
 #### Add user
 
-If say, you want to create a user named `tommy`, type the following command
+If say, you want to create a user named `new-user`, type the following command
 
 ```bash
 docker exec -ti ocserv ocpasswd -c /etc/ocserv/ocpasswd -g "Route,All" new-user
@@ -126,7 +126,7 @@ When prompt for password, type the password twice, then you will have the user w
 Delete user is similar to add user, just add another argument `-d` to the command line
 
 ```bash
-docker exec -ti ocserv ocpasswd -c /etc/ocserv/ocpasswd -d user
+docker exec -ti ocserv ocpasswd -c /etc/ocserv/ocpasswd -d test
 ```
 
 The above command will delete the default user `test`, if you start the instance without using environment variable `NO_TEST_USER`.
