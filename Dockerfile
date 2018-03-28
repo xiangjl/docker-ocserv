@@ -1,6 +1,6 @@
 FROM alpine:3.7
 
-MAINTAINER Tommy Lau <tommy@gen-new.com>
+MAINTAINER XiangJL <xjl-tommy@qq.com>
 
 ENV OC_VERSION=0.11.11
 
@@ -61,12 +61,11 @@ RUN set -x \
 	&& sed -i 's/^no-route/#no-route/' /etc/ocserv/ocserv.conf \
 	&& mkdir -p /etc/ocserv/config-per-group \
 	&& cat /tmp/groupinfo.txt >> /etc/ocserv/ocserv.conf \
-	&& rm -fr /tmp/cn-no-route.txt \
 	&& rm -fr /tmp/groupinfo.txt
 
 WORKDIR /etc/ocserv
 
-COPY All /etc/ocserv/config-per-group/All
+COPY all-route.txt /etc/ocserv/config-per-group/All
 COPY cn-no-route.txt /etc/ocserv/config-per-group/Route
 
 COPY docker-entrypoint.sh /entrypoint.sh
