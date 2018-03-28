@@ -1,5 +1,13 @@
 #!/bin/sh
 
+#Check config files
+if [ ! -f /etc/ocserv/ocserv.conf ] || [ ! -d /etc/ocserv/config-per-group/ ]; then
+	rm -rf /etc/ocserv/ocserv.conf
+	rm -rf /etc/ocserv/config-per-group/
+	cp /docker/config/ocserv.conf /etc/ocserv/ocserv.conf
+	cp -r /docker/config/config-per-group/ /etc/ocserv/config-per-group/
+fi
+
 if [ ! -f /etc/ocserv/certs/server-key.pem ] || [ ! -f /etc/ocserv/certs/server-cert.pem ]; then
 	# Check environment variables
 	if [ -z "$CA_CN" ]; then
