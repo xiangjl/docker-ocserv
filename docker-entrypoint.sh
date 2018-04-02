@@ -1,5 +1,25 @@
 #!/bin/sh
 
+# Check environment variables
+if [ -z "$CA_CN" ]; then
+	CA_CN="VPN CA"
+fi
+if [ -z "$CA_ORG" ]; then
+	CA_ORG="Big Corp"
+fi
+if [ -z "$CA_DAYS" ]; then
+	CA_DAYS=9999
+fi
+if [ -z "$SRV_CN" ]; then
+	SRV_CN="www.example.com"
+fi
+if [ -z "$SRV_ORG" ]; then
+	SRV_ORG="MyCompany"
+fi
+if [ -z "$SRV_DAYS" ]; then
+	SRV_DAYS=9999
+fi
+
 #Check config files
 if [ ! -f /etc/ocserv/ocserv.conf ] || [ ! -d /etc/ocserv/config-per-group/ ]; then
 	rm -rf /etc/ocserv/ocserv.conf
@@ -8,33 +28,8 @@ if [ ! -f /etc/ocserv/ocserv.conf ] || [ ! -d /etc/ocserv/config-per-group/ ]; t
 	cp -r /docker/config/config-per-group/ /etc/ocserv/config-per-group/
 fi
 
-if [ ! -f /etc/ocserv/certs/server-key.pem ] || [ ! -f /etc/ocserv/certs/server-cert.pem ]; then
-	# Check environment variables
-	if [ -z "$CA_CN" ]; then
-		CA_CN="VPN CA"
-	fi
-
-	if [ -z "$CA_ORG" ]; then
-		CA_ORG="Big Corp"
-	fi
-
-	if [ -z "$CA_DAYS" ]; then
-		CA_DAYS=9999
-	fi
-
-	if [ -z "$SRV_CN" ]; then
-		SRV_CN="www.example.com"
-	fi
-
-	if [ -z "$SRV_ORG" ]; then
-		SRV_ORG="MyCompany"
-	fi
-
-	if [ -z "$SRV_DAYS" ]; then
-		SRV_DAYS=9999
-	fi
-
-	# No certification found, generate one
+if [ ! -f /etc/ocserv/certs/ca.pem ]; then
+	# No ca certification found, generate one
 	mkdir /etc/ocserv/certs
 	cd /etc/ocserv/certs
 	certtool --generate-privkey --outfile ca-key.pem
@@ -49,6 +44,12 @@ if [ ! -f /etc/ocserv/certs/server-key.pem ] || [ ! -f /etc/ocserv/certs/server-
 	crl_signing_key
 	EOCA
 	certtool --generate-self-signed --load-privkey ca-key.pem --template ca.tmpl --outfile ca.pem
+fi
+
+if [ ! -f /etc/ocserv/certs/server-key.pem ] || [ ! -f /etc/ocserv/certs/server-cert.pem ]; then
+	# No server certification found, generate one
+	mkdir /etc/ocserv/certs
+	cd /etc/ocserv/certs
 	certtool --generate-privkey --outfile server-key.pem 
 	cat > server.tmpl <<-EOSRV
 	cn = "$SRV_CN"
