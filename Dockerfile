@@ -74,8 +74,8 @@ RUN set -x \
 
 WORKDIR /etc/ocserv
 
-COPY all-route.txt /docker/config/config-per-group/all
-COPY cn-no-route.txt /docker/config/config-per-group/route
+COPY all-route.txt /docker/config/config-per-group/All
+COPY cn-no-route.txt /docker/config/config-per-group/Route
 
 COPY docker-entrypoint.sh /docker/startup.sh
 ENTRYPOINT ["/docker/startup.sh"]

@@ -1,4 +1,4 @@
-default-select-group = route[Exclude CN]
-select-group = all[All Proxy]
+default-select-group = Route[Exclude CN]
+select-group = All[All Proxy]
 auto-select-group = false
 config-per-group = /etc/ocserv/config-per-group
