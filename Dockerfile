@@ -52,6 +52,7 @@ RUN buildDeps=" \
 	&& rm -rf /var/cache/apk/*
 
 # Setup config
+COPY docker-ocertsmgr.sh /docker/ocertsmgr.sh
 COPY groupinfo.txt /tmp/
 RUN set -x \
 	&& sed -i 's/\.\/sample\.passwd/\/etc\/ocserv\/ocpasswd/' /docker/config/ocserv.conf \
@@ -66,14 +67,15 @@ RUN set -x \
 	&& sed -i 's/192.168.1.2/8.8.8.8/' /docker/config/ocserv.conf \
 	&& sed -i 's/^route/#route/' /docker/config/ocserv.conf \
 	&& sed -i 's/^no-route/#no-route/' /docker/config/ocserv.conf \
+	&& ln -sf /docker/ocertsmgr.sh /usr/local/bin/ocertsmgr \
 	&& mkdir -p /docker/config/config-per-group \
 	&& cat /tmp/groupinfo.txt >> /docker/config/ocserv.conf \
 	&& rm -fr /tmp/groupinfo.txt
 
 WORKDIR /etc/ocserv
 
-COPY all-route.txt /docker/config/config-per-group/All
-COPY cn-no-route.txt /docker/config/config-per-group/Route
+COPY all-route.txt /docker/config/config-per-group/all
+COPY cn-no-route.txt /docker/config/config-per-group/route
 
 COPY docker-entrypoint.sh /docker/startup.sh
 ENTRYPOINT ["/docker/startup.sh"]
