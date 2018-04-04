@@ -6,6 +6,10 @@ You can login with two group (`Route`/`ALL`) from now on.
 `Route` group means you can access China Mainland website directly and other connection will be protected by OpenConnect VPN
 `All` group means all of connection will be protected by OpenConnect VPN 
 
+## Update on April 4,2018
+
+You can login to OpenConnect VPN using certificate authentication from now on. And you can use ocertsmgr to generate new certificates or revoke certificates.
+
 ## What is OpenConnect Server?
 
 [OpenConnect server (ocserv)](http://www.infradead.org/ocserv/) is an SSL VPN server. It implements the OpenConnect SSL VPN protocol, and has also (currently experimental) compatibility with clients using the [AnyConnect SSL VPN](http://www.cisco.com/c/en/us/support/security/anyconnect-vpn-client/tsd-products-support-series-home.html) protocol.
@@ -120,3 +124,27 @@ The above command will delete the default user `test`, if you start the instance
 #### Change password
 
 Change password is exactly the same command as add user, please refer to the command mentioned above.
+
+#### Generate new certificates
+
+If say, you want to generate new certificates for `new-user`, type the following command.
+
+```bash
+docker exec -ti ocserv ocertsmgr add new-user Route
+...
+Enter password:
+Re-enter password:
+```
+When prompt for password, type the password twice, then you will have the user with the password you want.
+The command means generate new certificates for user `new-user` to group `Route`.
+
+#### Revoke certificates
+
+Revoke certificates is similar to generate certificates, just use another argument `del` to the command line
+
+```bash
+docker exec -ti ocserv ocertsmgr del user
+```
+The command means revoke certificates for user `user`.
+
+
