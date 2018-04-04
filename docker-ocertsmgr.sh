@@ -24,7 +24,7 @@ function generating_client_certificates() {
 	tls_www_client 
 	EOUSER
 	certtool --generate-certificate --load-privkey $BASEDIR/certs/$USER/$GROUP/user-key.pem --load-ca-certificate $BASEDIR/certs/ca.pem --load-ca-privkey $BASEDIR/certs/ca-key.pem --template $BASEDIR/certs/$USER/$GROUP/user.tmpl --outfile $BASEDIR/certs/$USER/$GROUP/user-cert.pem
-	certtool --to-p12 --load-privkey $BASEDIR/certs/$USER/$GROUP/user-key.pem --pkcs-cipher 3des-pkcs12 --load-certificate $BASEDIR/certs/$USER/$GROUP/user-cert.pem --outfile $BASEDIR/certs/$USER/$GROUP/$USER-$GROUP.p12 --outder
+	certtool --to-p12 --load-privkey $BASEDIR/certs/$USER/$GROUP/user-key.pem --pkcs-cipher 3des-pkcs12 --p12-name=$USER-$GROUP --load-certificate $BASEDIR/certs/$USER/$GROUP/user-cert.pem --outfile $BASEDIR/certs/$USER/$GROUP/$USER-$GROUP.p12 --outder
 }
 
 function revoking_client_certificate() {
@@ -38,7 +38,7 @@ function revoking_client_certificate() {
 
 if [ "$1" == "add" ] && [ ! "$USER" == "" ] && [ ! "$GROUP" == "" ] && [ ! "$DAYS" == "" ]; then
 	generating_client_certificates
-elif [ "$2" == "del" ] && [ ! "$USER" == "" ] && [ ! "$GROUP" == "" ]; then
+elif [ "$1" == "del" ] && [ ! "$USER" == "" ] && [ ! "$GROUP" == "" ]; then
 	revoking_client_certificate
 else
 	help
