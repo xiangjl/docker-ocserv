@@ -52,16 +52,22 @@ RUN buildDeps=" \
 	&& rm -rf /var/cache/apk/*
 
 # Setup config
+COPY docker-ocertsmgr.sh /docker/ocertsmgr.sh
 COPY groupinfo.txt /tmp/
 RUN set -x \
 	&& sed -i 's/\.\/sample\.passwd/\/etc\/ocserv\/ocpasswd/' /docker/config/ocserv.conf \
 	&& sed -i 's/\(max-same-clients = \)2/\110/' /docker/config/ocserv.conf \
 	&& sed -i 's/\.\.\/tests/\/etc\/ocserv/' /docker/config/ocserv.conf \
 	&& sed -i 's/#\(compression.*\)/\1/' /docker/config/ocserv.conf \
+	&& sed -i 's/^#enable-auth = "certificate"/enable-auth = "certificate"/' /docker/config/ocserv.conf \
+	&& sed -i 's/^cert-user-oid = 0.9.2342.19200300.100.1.1/cert-user-oid = 2.5.4.3/' /docker/config/ocserv.conf \
+	&& sed -i 's/#cert-group-oid/cert-group-oid/' /docker/config/ocserv.conf \
+	&& sed -i 's/^#crl = \/path\/to\/crl.pem/crl = \/etc\/ocserv\/certs\/crl.pem/' /docker/config/ocserv.conf \
 	&& sed -i '/^ipv4-network = /{s/192.168.1.0/192.168.99.0/}' /docker/config/ocserv.conf \
 	&& sed -i 's/192.168.1.2/8.8.8.8/' /docker/config/ocserv.conf \
 	&& sed -i 's/^route/#route/' /docker/config/ocserv.conf \
 	&& sed -i 's/^no-route/#no-route/' /docker/config/ocserv.conf \
+	&& ln -sf /docker/ocertsmgr.sh /usr/local/bin/ocertsmgr \
 	&& mkdir -p /docker/config/config-per-group \
 	&& cat /tmp/groupinfo.txt >> /docker/config/ocserv.conf \
 	&& rm -fr /tmp/groupinfo.txt
@@ -75,4 +81,4 @@ COPY docker-entrypoint.sh /docker/startup.sh
 ENTRYPOINT ["/docker/startup.sh"]
 
 EXPOSE 443
-CMD ["ocserv", "-c", "/etc/ocserv/ocserv.conf", "-f"]
+CMD ["ocserv", "-c", "/etc/ocserv/ocserv.conf","-f"]
