@@ -2,7 +2,7 @@ FROM alpine:3.7
 
 MAINTAINER XiangJL <xjl-tommy@qq.com>
 
-ENV OC_VERSION=0.11.11
+ENV OC_VERSION=0.12.1
 
 RUN buildDeps=" \
 		curl \
