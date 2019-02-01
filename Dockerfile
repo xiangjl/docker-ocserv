@@ -2,7 +2,7 @@ FROM alpine:3.7
 
 MAINTAINER XiangJL <xjl-tommy@qq.com>
 
-ENV OC_VERSION=0.12.1
+ENV OC_VERSION=0.12.2
 
 RUN buildDeps=" \
 		curl \
@@ -67,6 +67,7 @@ RUN set -x \
 	&& sed -i 's/192.168.1.2/8.8.8.8/' /docker/config/ocserv.conf \
 	&& sed -i 's/^route/#route/' /docker/config/ocserv.conf \
 	&& sed -i 's/^no-route/#no-route/' /docker/config/ocserv.conf \
+	&& sed -i '/\[vhost:www.example.com\]/,$d' /docker/config/ocserv.conf \
 	&& ln -sf /docker/ocertsmgr.sh /usr/local/bin/ocertsmgr \
 	&& mkdir -p /docker/config/config-per-group \
 	&& cat /tmp/groupinfo.txt >> /docker/config/ocserv.conf \
