@@ -70,13 +70,13 @@ docker run --name ocserv --privileged -p 443:443 -p 443:443/udp -d xiangjl/ocser
 Start an instance with server name `my.test.com`, `My Test` and `365` days
 
 ```bash
-docker run --name ocserv --privileged -p 443:443 -p 443:443/udp -e SRV_CN=my.test.com -e SRV_ORG="My Test" -e SRV_DAYS=365 -d tommylau/ocserv
+docker run --name ocserv --privileged -p 443:443 -p 443:443/udp -e SRV_CN=my.test.com -e SRV_ORG="My Test" -e SRV_DAYS=365 -d xiangjl/ocserv
 ```
 
 Start an instance with CA name `My CA`, `My Corp` and `3650` days
 
 ```bash
-docker run --name ocserv --privileged -p 443:443 -p 443:443/udp -e CA_CN="My CA" -e CA_ORG="My Corp" -e CA_DAYS=3650 -d tommylau/ocserv
+docker run --name ocserv --privileged -p 443:443 -p 443:443/udp -e CA_CN="My CA" -e CA_ORG="My Corp" -e CA_DAYS=3650 -d xiangjl/ocserv
 ```
 
 A totally customized instance with both CA and server certification
